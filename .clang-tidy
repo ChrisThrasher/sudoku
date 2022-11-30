@@ -13,6 +13,7 @@ Checks: >
   -bugprone-exception-escape,
   -cppcoreguidelines-avoid-magic-numbers,
   -cppcoreguidelines-pro-bounds-constant-array-index,
+  -cppcoreguidelines-pro-type-union-access,
   -modernize-use-trailing-return-type,
   -readability-braces-around-statements,
   -readability-function-cognitive-complexity,
@@ -27,5 +28,5 @@ CheckOptions:
   - { key: readability-identifier-naming.MemberCase,          value: lower_case }
   - { key: readability-identifier-naming.PrivateMemberCase,   value: lower_case }
   - { key: readability-identifier-naming.PrivateMemberPrefix, value: m_ }
-HeaderFilterRegex: '.*'
+HeaderFilterRegex: './src/'
 WarningsAsErrors: '*'
