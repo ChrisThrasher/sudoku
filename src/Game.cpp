@@ -1,8 +1,9 @@
-#include "Grid.hpp"
+#include "Game.hpp"
+#include "PauseMenu.hpp"
 
 #include <iostream>
 
-Grid::Grid(const sf::Font& font)
+Game::Game(const sf::Font& font)
 {
     for (size_t i = 0; i < length; ++i)
         for (size_t j = 0; j < length; ++j)
@@ -20,7 +21,29 @@ Grid::Grid(const sf::Font& font)
     }
 }
 
-void Grid::highlight(const sf::Vector2f& position)
+auto Game::update(const sf::Event& event) -> bool
+{
+    assert(!m_next_state);
+
+    switch (event.type) {
+    case sf::Event::MouseButtonPressed:
+        highlight({ float(event.mouseButton.x), float(event.mouseButton.y) });
+        break;
+    case sf::Event::KeyPressed:
+        if (event.key.code == sf::Keyboard::Escape) {
+            m_next_state = std::make_unique<PauseMenu>();
+            return false;
+        }
+        input(event.key.code);
+        break;
+    default:
+        break;
+    }
+
+    return true;
+}
+
+void Game::highlight(const sf::Vector2f& position)
 {
     m_active_cell->unhighlight();
     for (auto& row : m_grid)
@@ -29,7 +52,7 @@ void Grid::highlight(const sf::Vector2f& position)
     m_active_cell->highlight();
 }
 
-void Grid::input(const sf::Keyboard::Key& key)
+void Game::input(const sf::Keyboard::Key& key)
 {
     switch (key) {
     case sf::Keyboard::Num0:
@@ -111,7 +134,7 @@ void Grid::input(const sf::Keyboard::Key& key)
     m_active_cell->unflag();
 }
 
-void Grid::draw(sf::RenderTarget& target, const sf::RenderStates& /* states */) const
+void Game::draw(sf::RenderTarget& target, const sf::RenderStates& /* states */) const
 {
     for (const auto& row : m_grid)
         for (const auto& cell : row)
