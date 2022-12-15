@@ -21,19 +21,15 @@ Game::Game(const sf::Font& font)
     }
 }
 
-auto Game::update(const sf::Event& event) -> bool
+auto Game::update(const sf::Event& event) -> std::variant<bool, std::unique_ptr<State>>
 {
-    assert(!m_next_state);
-
     switch (event.type) {
     case sf::Event::MouseButtonPressed:
         highlight({ float(event.mouseButton.x), float(event.mouseButton.y) });
         break;
     case sf::Event::KeyPressed:
-        if (event.key.code == sf::Keyboard::Escape) {
-            m_next_state = std::make_unique<PauseMenu>();
-            return false;
-        }
+        if (event.key.code == sf::Keyboard::Escape)
+            return std::make_unique<PauseMenu>();
         input(event.key.code);
         break;
     default:

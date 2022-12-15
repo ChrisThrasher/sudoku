@@ -10,6 +10,6 @@ class PauseMenu : public State {
 
 public:
     PauseMenu();
-    auto update(const sf::Event& event) -> bool override;
+    auto update(const sf::Event& event) -> std::variant<bool, std::unique_ptr<State>> override;
     void draw(sf::RenderTarget& target, const sf::RenderStates& /* states */) const override;
 };

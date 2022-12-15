@@ -15,10 +15,8 @@ PauseMenu::PauseMenu()
     m_text.setPosition({ 200, 200 });
 }
 
-auto PauseMenu::update(const sf::Event& event) -> bool
+auto PauseMenu::update(const sf::Event& event) -> std::variant<bool, std::unique_ptr<State>>
 {
-    assert(!m_next_state);
-
     switch (event.type) {
     case sf::Event::MouseButtonPressed:
         return false;

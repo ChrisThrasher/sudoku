@@ -17,17 +17,18 @@ int main()
     states.push(std::make_unique<Game>(font));
 
     while (window.isOpen()) {
+        const auto overload
+            = Overload { [&states](bool is_running) {
+                            if (!is_running)
+                                states.pop();
+                        },
+                         [&states](std::unique_ptr<State> new_state) { states.push(std::move(new_state)); } };
+
         for (auto event = sf::Event(); window.pollEvent(event);) {
             auto& state = *states.top();
             if (event.type == sf::Event::Closed)
                 window.close();
-            if (!state.update(event)) {
-                if (auto next_state = state.next_state())
-                    states.push(std::move(next_state));
-                else if (states.size() > 1)
-                    states.pop();
-                break;
-            }
+            std::visit(overload, state.update(event));
         }
 
         window.clear();
