@@ -1,4 +1,5 @@
 #include "Cell.hpp"
+#include "ResourceManager.hpp"
 
 #include <cassert>
 
@@ -7,8 +8,8 @@ constexpr auto highlight_color = sf::Color(64, 64, 64);
 constexpr auto default_color = sf::Color(32, 32, 32);
 }
 
-Cell::Cell(const sf::Font& font, const sf::Vector2f& position)
-    : m_text("", font, Cell::size.y / 2u)
+Cell::Cell(const sf::Vector2f& position)
+    : m_text("", get_font(), Cell::size.y / 2u)
 {
     m_shape.setPosition(position);
     m_shape.setFillColor(default_color);

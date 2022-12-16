@@ -3,11 +3,11 @@
 
 #include <iostream>
 
-Game::Game(const sf::Font& font)
+Game::Game()
 {
     for (size_t i = 0; i < length; ++i)
         for (size_t j = 0; j < length; ++j)
-            m_grid[i][j] = { font, { float(i) * Cell::size.x, float(j) * Cell::size.y } };
+            m_grid[i][j] = { { float(i) * Cell::size.x, float(j) * Cell::size.y } };
 
     for (size_t i = 0; i < m_boxes.size(); ++i) {
         for (size_t j = 0; j < m_boxes.size(); ++j) {

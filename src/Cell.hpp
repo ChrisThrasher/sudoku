@@ -11,7 +11,7 @@ public:
     static inline constexpr sf::Vector2u size { 70, 70 };
 
     Cell() = default;
-    Cell(const sf::Font& font, const sf::Vector2f& position);
+    Cell(const sf::Vector2f& position);
 
     void test_intersect(const sf::Vector2f& position, Cell*& active_cell);
     void highlight();

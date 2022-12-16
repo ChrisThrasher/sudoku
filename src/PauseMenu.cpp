@@ -1,13 +1,11 @@
 #include "PauseMenu.hpp"
+#include "ResourceManager.hpp"
+
+#include <SFML/Graphics/Font.hpp>
 
 PauseMenu::PauseMenu()
 {
-    // FIXME: Reuse same font from main()
-    static auto font = sf::Font();
-    if (!font.loadFromFile(FONT_PATH / std::filesystem::path("font.ttf")))
-        throw std::runtime_error("Failed to load font");
-
-    m_text.setFont(font);
+    m_text.setFont(get_font());
     m_text.setString("Game Paused");
     m_text.setCharacterSize(24);
 

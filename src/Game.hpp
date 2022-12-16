@@ -16,7 +16,7 @@ class Game : public State {
     void input(const sf::Keyboard::Key& key);
 
 public:
-    Game(const sf::Font& font);
+    Game();
     auto update(const sf::Event& event) -> std::variant<bool, std::unique_ptr<State>> override;
     void draw(sf::RenderTarget& target, const sf::RenderStates& /* states */) const override;
 };
