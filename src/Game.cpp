@@ -3,7 +3,8 @@
 
 #include <iostream>
 
-Game::Game()
+Game::Game(sf::RenderWindow& window)
+    : m_window(window)
 {
     for (size_t i = 0; i < length; ++i)
         for (size_t j = 0; j < length; ++j)
@@ -25,7 +26,7 @@ auto Game::update(const sf::Event& event) -> std::variant<bool, std::unique_ptr<
 {
     switch (event.type) {
     case sf::Event::MouseButtonPressed:
-        highlight({ float(event.mouseButton.x), float(event.mouseButton.y) });
+        highlight(m_window.mapPixelToCoords({ event.mouseButton.x, event.mouseButton.y }));
         break;
     case sf::Event::KeyPressed:
         if (event.key.code == sf::Keyboard::Escape)

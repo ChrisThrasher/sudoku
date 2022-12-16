@@ -8,7 +8,7 @@ int main()
     window.setFramerateLimit(60);
 
     auto states = std::stack<std::unique_ptr<State>>();
-    states.push(std::make_unique<Game>());
+    states.push(std::make_unique<Game>(window));
 
     while (window.isOpen()) {
         for (auto event = sf::Event(); window.pollEvent(event);) {
