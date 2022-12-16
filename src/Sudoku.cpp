@@ -1,7 +1,5 @@
 #include "Game.hpp"
-#include "State.hpp"
 
-#include <memory>
 #include <stack>
 
 int main()
@@ -17,18 +15,20 @@ int main()
     states.push(std::make_unique<Game>(font));
 
     while (window.isOpen()) {
-        const auto overload
-            = Overload { [&states](bool is_running) {
-                            if (!is_running)
-                                states.pop();
-                        },
-                         [&states](std::unique_ptr<State> new_state) { states.push(std::move(new_state)); } };
-
         for (auto event = sf::Event(); window.pollEvent(event);) {
-            auto& state = *states.top();
+            // Handle window close at a global level
             if (event.type == sf::Event::Closed)
                 window.close();
-            std::visit(overload, state.update(event));
+
+            // Update the current state
+            auto status = states.top()->update(event);
+
+            // Handle potential return types
+            if (std::holds_alternative<bool>(status))
+                if (!std::get<bool>(status))
+                    states.pop();
+            if (std::holds_alternative<std::unique_ptr<State>>(status))
+                states.push(std::move(std::get<std::unique_ptr<State>>(status)));
         }
 
         window.clear();

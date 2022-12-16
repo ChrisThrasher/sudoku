@@ -13,10 +13,3 @@ public:
 
     [[nodiscard]] virtual auto update(const sf::Event& event) -> std::variant<bool, std::unique_ptr<State>> = 0;
 };
-
-template <class... Ts>
-struct Overload : Ts... {
-    using Ts::operator()...;
-};
-template <class... Ts>
-Overload(Ts...) -> Overload<Ts...>;

@@ -1,5 +1,7 @@
 #include "Cell.hpp"
 
+#include <cassert>
+
 namespace {
 constexpr auto highlight_color = sf::Color(64, 64, 64);
 constexpr auto default_color = sf::Color(32, 32, 32);
