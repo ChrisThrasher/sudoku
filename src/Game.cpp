@@ -1,5 +1,8 @@
 #include "Game.hpp"
 #include "PauseMenu.hpp"
+#include "ResourceManager.hpp"
+
+#include <SFML/Audio/Sound.hpp>
 
 #include <iostream>
 
@@ -42,11 +45,14 @@ auto Game::update(const sf::Event& event) -> std::variant<bool, std::unique_ptr<
 
 void Game::highlight(const sf::Vector2f& position)
 {
+    static auto click_sound = sf::Sound(get_click_sound());
+
     m_active_cell->unhighlight();
     for (auto& row : m_grid)
         for (auto& cell : row)
             cell.test_intersect(position, m_active_cell);
     m_active_cell->highlight();
+    click_sound.play();
 }
 
 void Game::input(const sf::Keyboard::Key& key)
@@ -90,11 +96,19 @@ void Game::input(const sf::Keyboard::Key& key)
     if (!m_active_cell->get_value().has_value())
         return;
 
+    // Determine what cell was clicked on
     auto active_cell_coordinates = sf::Vector2<size_t>();
     for (size_t i = 0; i < length; ++i)
         for (size_t j = 0; j < length; ++j)
             if (&m_grid[i][j] == m_active_cell)
                 active_cell_coordinates = { i, j };
+
+    // Consolidate invalid input logic
+    const auto handle_invalid_input = [this] {
+        static auto bad_sound = sf::Sound(get_bad_sound());
+        bad_sound.play();
+        m_active_cell->flag();
+    };
 
     // Check for same number in row
     for (size_t i = 0; i < length; ++i) {
@@ -102,7 +116,7 @@ void Game::input(const sf::Keyboard::Key& key)
         if (&cell == m_active_cell)
             continue;
         if (cell.get_value() == m_active_cell->get_value())
-            return m_active_cell->flag();
+            return handle_invalid_input();
     }
 
     // Check for same number in column
@@ -111,7 +125,7 @@ void Game::input(const sf::Keyboard::Key& key)
         if (&cell == m_active_cell)
             continue;
         if (cell.get_value() == m_active_cell->get_value())
-            return m_active_cell->flag();
+            return handle_invalid_input();
     }
 
     // Check for same number in box
@@ -120,14 +134,15 @@ void Game::input(const sf::Keyboard::Key& key)
     for (size_t i = active_box_coordinates.x; i < active_box_coordinates.x + 3; ++i) {
         for (size_t j = active_box_coordinates.y; j < active_box_coordinates.y + 3; ++j) {
             const auto& cell = m_grid[i][j];
-
             if (&cell == m_active_cell)
                 continue;
             if (cell.get_value() == m_active_cell->get_value())
-                return m_active_cell->flag();
+                return handle_invalid_input();
         }
     }
 
+    static auto good_sound = sf::Sound(get_good_sound());
+    good_sound.play();
     m_active_cell->unflag();
 }
 
