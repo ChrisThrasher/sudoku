@@ -6,7 +6,7 @@
 
 PauseMenu::PauseMenu()
 {
-    m_text.setFont(get_font());
+    m_text.setFont(get_font(DATA_DIR / std::filesystem::path("font.ttf")));
     m_text.setString("Game Paused");
     m_text.setCharacterSize(48);
 

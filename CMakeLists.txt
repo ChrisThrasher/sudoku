@@ -15,7 +15,7 @@ FetchContent_Declare(SFML
     GIT_TAG master)
 FetchContent_MakeAvailable(SFML)
 
-add_executable(sudoku src/Sudoku.cpp src/Cell.cpp src/Game.cpp src/PauseMenu.cpp)
+add_executable(sudoku src/Sudoku.cpp src/Cell.cpp src/Game.cpp src/PauseMenu.cpp src/ResourceManager.cpp)
 target_link_libraries(sudoku PRIVATE SFML::Audio SFML::Graphics)
 target_compile_definitions(sudoku PRIVATE DATA_DIR="${CMAKE_SOURCE_DIR}/data")
 

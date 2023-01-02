@@ -45,7 +45,7 @@ auto Game::update(const sf::Event& event) -> std::variant<bool, std::unique_ptr<
 
 void Game::highlight(const sf::Vector2f& position)
 {
-    static auto click_sound = sf::Sound(get_click_sound());
+    static auto click_sound = sf::Sound(get_sound_buffer(DATA_DIR / std::filesystem::path("click.wav")));
 
     m_active_cell->unhighlight();
     for (auto& row : m_grid)
@@ -105,7 +105,7 @@ void Game::input(const sf::Keyboard::Key& key)
 
     // Consolidate invalid input logic
     const auto handle_invalid_input = [this] {
-        static auto bad_sound = sf::Sound(get_bad_sound());
+        static auto bad_sound = sf::Sound(get_sound_buffer(DATA_DIR / std::filesystem::path("bad.wav")));
         bad_sound.play();
         m_active_cell->flag();
     };
@@ -141,7 +141,7 @@ void Game::input(const sf::Keyboard::Key& key)
         }
     }
 
-    static auto good_sound = sf::Sound(get_good_sound());
+    static auto good_sound = sf::Sound(get_sound_buffer(DATA_DIR / std::filesystem::path("good.wav")));
     good_sound.play();
     m_active_cell->unflag();
 }

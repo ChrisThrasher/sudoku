@@ -9,7 +9,7 @@ constexpr auto default_color = sf::Color(32, 32, 32);
 }
 
 Cell::Cell(const sf::Vector2f& position)
-    : m_text("", get_font(), Cell::size.y / 2u)
+    : m_text("", get_font(DATA_DIR / std::filesystem::path("font.ttf")), Cell::size.y / 2u)
 {
     m_shape.setPosition(position);
     m_shape.setFillColor(default_color);
